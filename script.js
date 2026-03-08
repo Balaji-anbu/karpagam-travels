@@ -309,7 +309,9 @@ serviceInput.addEventListener('change', validateService);
 dateInput.addEventListener('change', validateDate);
 
 // Form submission
-bookingForm.addEventListener('submit', (e) => {
+const submitBtn = bookingForm.querySelector('.btn-submit');
+
+bookingForm.addEventListener('submit', async (e) => {
   e.preventDefault();
 
   // Validate all fields
@@ -319,16 +321,37 @@ bookingForm.addEventListener('submit', (e) => {
   const isServiceValid = validateService();
   const isDateValid = validateDate();
 
-  // If all fields are valid
   if (isNameValid && isPhoneValid && isEmailValid && isServiceValid && isDateValid) {
-    // Show success message
-    successMessage.classList.add('show');
+    // Disable button and show loading
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
 
-    // Reset form
-    bookingForm.reset();
+    // Send form data to Web3Forms
+    const formData = new FormData(bookingForm);
 
-    // Scroll to top of booking section
-    document.getElementById('booking').scrollIntoView({ behavior: 'smooth' });
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        // Show success message
+        successMessage.classList.add('show');
+        bookingForm.reset();
+        document.getElementById('booking').scrollIntoView({ behavior: 'smooth' });
+      } else {
+        alert('Something went wrong. Please call us at 9384419927 to book.');
+      }
+    } catch (error) {
+      alert('Network error. Please call us at 9384419927 to book.');
+    }
+
+    // Re-enable button
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Submit Booking Request';
   } else {
     // Scroll to first error
     const firstError = bookingForm.querySelector('.error');
