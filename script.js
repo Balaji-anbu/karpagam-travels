@@ -182,7 +182,7 @@ const observer = new IntersectionObserver((entries) => {
 
 // Observe all cards and sections
 const animateElements = document.querySelectorAll(
-  '.feature-card, .service-card, .testimonial-card, .contact-card, .about-text'
+  '.feature-card, .service-card, .testimonial-card, .contact-card, .about-text, .faq-item'
 );
 
 animateElements.forEach(element => {
