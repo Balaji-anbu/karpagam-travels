@@ -404,7 +404,7 @@ function debounce(func, wait) {
 // ==========================================
 
 document.addEventListener('DOMContentLoaded', () => {
-  const images = document.querySelectorAll('img');
+  const images = document.querySelectorAll('img:not(.nav-logo-img)');
 
   images.forEach(img => {
     img.addEventListener('load', () => {
